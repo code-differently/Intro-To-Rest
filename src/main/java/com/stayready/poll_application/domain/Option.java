@@ -14,6 +14,7 @@ public class Option {
     @Column(name = "OPTION_ID")
     private long Id;
 
+    //private int count in book
     @Column(name = "OPTION_VALUE")
     private String value;
 
