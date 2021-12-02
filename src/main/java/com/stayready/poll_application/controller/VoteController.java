@@ -34,4 +34,10 @@ public class VoteController {
         return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
     }
 
+    //show all votes
+    @RequestMapping(value="/polls/{pollId}/votes", method=RequestMethod.GET)
+    public Iterable<Vote> getAllVotes(@PathVariable Long pollId) {
+        return voteRepository. findByPoll(pollId);
+    }
+
 }

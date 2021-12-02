@@ -11,12 +11,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.inject.Inject;
 import java.net.URI;
+import java.util.Optional;
 
 
 @RestController
 public class PollController {
 
-    @Inject
+
     private PollRepository pollRepository;
 
     @Autowired
@@ -44,12 +45,14 @@ public class PollController {
         return new ResponseEntity<>(httpHeader, HttpStatus.CREATED);
     }
 
+    //Get individual poll
     @RequestMapping(value="/polls/{pollId}", method=RequestMethod.GET)
     public ResponseEntity<?> getPoll(@PathVariable Long pollId) {
-        Poll p = pollRepository.findOne(pollId);
-        return new ResponseEntity<> (p, HttpStatus.OK);
+        Optional<Poll> p = pollRepository.findById(pollId);
+        return new ResponseEntity<> (p.get(), HttpStatus.OK);
     }
 
+    //Update poll
     @RequestMapping(value="/polls/{pollId}", method=RequestMethod.PUT)
     public ResponseEntity<?> updatePoll(@RequestBody Poll poll, @PathVariable Long pollId) {
         // Save the entity
@@ -57,9 +60,11 @@ public class PollController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    //Delete poll
     @RequestMapping(value="/polls/{pollId}", method=RequestMethod.DELETE)
     public ResponseEntity<?> deletePoll(@PathVariable Long pollId) {
-        pollRepository.delete(pollId);
+        Optional<Poll> p = pollRepository.findById(pollId);
+        pollRepository.delete(p.get());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
